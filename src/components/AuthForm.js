@@ -47,8 +47,9 @@ const AuthForm = ({ heading, redirect, endpoint, setAuth = false }) => {
       if (setAuth) {
         localStorage.setItem('auth', 'true');
         localStorage.setItem('email', email);
+        localStorage.setItem('id', res.data._id);
         dispatch({ type: 'SET_IS_AUTH', payload: true });
-        dispatch({ type: 'SET_EMAIL', payload: email });
+        dispatch({ type: 'SET_ID', payload: res.data._id });
       }
       history.push(redirect);
       // Redirect endpoint

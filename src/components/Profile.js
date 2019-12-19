@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Card, Icon, Button } from 'semantic-ui-react';
 import axios from 'axios';
 import {
   BrowserRouter as Router,
@@ -12,19 +13,55 @@ import {
 
 import useProtectedRoute from '../hooks';
 
+const baseDate = new Date(2000, 1, 1);
+const { REACT_APP_SERVER: server } = process.env;
+
 const Profile = () => {
-  const [latestSession, setSession] = useState({});
+  //localStorage.setItem('hasCommented', 'false');
   const dispatch = useDispatch();
-  //dispatch({ type: 'SET_IS_AUTH', payload: false });
+  //const [latest, setSession] = useState({});
   const auth = useSelector(state => state.auth.isAuth);
-  const email = useSelector(state => state.auth.email);
-  // const [auth, email] = useProtectedRoute();
+  const id = useSelector(state => state.auth.id);
+  const title = useSelector(state => state.session.title);
+  const hasCommented = useSelector(state => state.comment.hasCommented);
   useProtectedRoute();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`${server}/sessions`);
+      const filtered = response.data.filter(session =>
+        session.players.includes(id)
+      );
+      const reduced = filtered.reduce((largest, current) =>
+        current > largest ? largest : current
+      );
+      //setSession(reduced);
+      dispatch({ type: 'SET_SESSION_TITLE', payload: reduced.title });
+      dispatch({ type: 'SET_SESSION_ID', payload: reduced.id });
+      localStorage.setItem('latest_id', reduced._id);
+      localStorage.setItem('latest_title', reduced.title);
+      console.log(`fetched: ${JSON.stringify(reduced)}`);
+    };
+    fetchData();
+  }, []);
+
   return (
     <div>
       <h1>Latest Session</h1>
-      Profile {auth}
-      {email}
+      <Card>
+        <Card.Content>
+          <Card.Header>{title}</Card.Header>
+          "You can leave some feedback on your latest session."
+          <Card.Content extra>
+            {!hasCommented && (
+              <Link to="/feedback">
+                {' '}
+                <Button icon="edit" />
+              </Link>
+            )}
+          </Card.Content>
+        </Card.Content>
+      </Card>
     </div>
   );
 };

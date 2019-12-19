@@ -1,9 +1,11 @@
 const auth = localStorage.getItem('auth');
 const email_ = localStorage.getItem('email');
+const id_ = localStorage.getItem('id');
 
 const initialState = {
   isAuth: auth === 'true',
-  email: email_ || ''
+  email: email_ || '',
+  id: id_ || ''
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -12,6 +14,8 @@ export default function(state = initialState, { type, payload }) {
       return { ...state, isAuth: payload };
     case 'SET_EMAIL':
       return { ...state, email: payload };
+    case 'SET_ID':
+      return { ...state, id: payload };
     default:
       return state;
   }

@@ -8,7 +8,7 @@ import {
   Link
 } from 'react-router-dom';
 
-import { Register, Login, Home, Profile } from './components/';
+import { Register, Login, Home, Profile, Feedback } from './components/';
 
 // const Profile = () => {
 //   return <div>Profile</div>;
@@ -22,6 +22,7 @@ const App = () => {
         <Route path="/profile" exact component={Profile} />
         <Route path="/register" exact component={Register} />
         <Route path="/login" exact component={Login} />
+        <Route path="/feedback" exact component={Feedback} />
       </Switch>
     </Router>
   );
