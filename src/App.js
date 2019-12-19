@@ -8,11 +8,11 @@ import {
   Link
 } from 'react-router-dom';
 
-import { Register, Login, Home } from './components/';
+import { Register, Login, Home, Profile } from './components/';
 
-const Profile = () => {
-  return <div>Profile</div>;
-};
+// const Profile = () => {
+//   return <div>Profile</div>;
+// };
 
 const App = () => {
   return (

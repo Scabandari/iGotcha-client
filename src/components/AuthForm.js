@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Message, Form } from 'semantic-ui-react';
 import { Redirect, useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import axios from 'axios';
 
-const AuthForm = ({ heading, redirect, endpoint }) => {
+const AuthForm = ({ heading, redirect, endpoint, setAuth = false }) => {
+  const dispatch = useDispatch();
   const [username, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,6 +44,12 @@ const AuthForm = ({ heading, redirect, endpoint }) => {
       console.log(`res, ${JSON.stringify(res.data)}`);
       setIsWaiting(false);
       clearForm();
+      if (setAuth) {
+        localStorage.setItem('auth', 'true');
+        localStorage.setItem('email', email);
+        dispatch({ type: 'SET_IS_AUTH', payload: true });
+        dispatch({ type: 'SET_EMAIL', payload: email });
+      }
       history.push(redirect);
       // Redirect endpoint
       //setPortalIsOpen(true);
